@@ -66,16 +66,16 @@ These visualizations show the most frequent words (excluding common English stop
 * **Key Insight:** This cloud confirms that duplicate questions frequently cluster around **specific, narrow topics** (e.g., product names, popular technologies, financial terms). The highly prominent words here serve as strong indicators of where the core duplication issues lie.
 
 <p align="center">
-  <img src="assests/eda_wordcloud_duplicates.jpg" alt="Word Cloud for Duplicate Pairs" width="500"/>
+  <img src="assests/eda_wordcloud_duplicates.png" alt="Word Cloud for Duplicate Pairs" width="500"/>
 </p>
 
 #### **Word Cloud for Non-Duplicate Pairs**
 
 * **Key Insight:** Words in this cloud are generally **more generic or broad**. Comparing the two clouds shows that questions marked as non-duplicate have a wider variety of themes, lacking the intense frequency clustering seen in the duplicate set.
 
-![Word Cloud for Non-Duplicate Pairs](assets/eda_wordcloud_non_duplicates.jpg)
+
 <p align="center">
-  <img src="assests/eda_wordcloud_non_duplicates.jpg" alt="Word Cloud for Non-Duplicate Pairs" width="500"/>
+  <img src="assests/eda_wordcloud_non_duplicates.png" alt="Word Cloud for Non-Duplicate Pairs" width="500"/>
 </p>
 
 ### 6. Feature Correlation
