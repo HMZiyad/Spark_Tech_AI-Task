@@ -1,4 +1,4 @@
-# ❓ Quora Question Pair Similarity Classification
+#  Quora Question Pair Similarity Classification
 
 This project aims to build a machine learning model to classify pairs of questions from the Quora platform as either **duplicate** (semantically similar) or **not duplicate**. The solution involves comprehensive Exploratory Data Analysis (EDA), robust text preprocessing, feature engineering, and binary classification using a high-performing model.
 
@@ -18,6 +18,7 @@ The EDA phase focused on understanding the data structure, identifying class imb
 
 * **Analysis:** The distribution plot shows that approximately **63%** of the pairs are **Not Duplicate** (0), while only **37%** are **Duplicate** (1).
 * **Impact:** Due to this class imbalance, we must use **F1-Score** and **AUC-ROC** as primary evaluation metrics, as simple accuracy would be misleading.
+![Target Variable Distribution](assets/eda_duplicate_distribution.png)
 
 ### 2. Length Feature Analysis (Word Count Difference)
 
@@ -25,7 +26,7 @@ The EDA phase focused on understanding the data structure, identifying class imb
 
 * **Feature:** The `word_count_diff` feature was engineered to measure the absolute difference in word count between the two questions in a pair.
 * **Analysis:** The KDE plot shows that the distribution for **Duplicate** pairs (blue curve) is highly concentrated around **zero** difference. This is a critical finding, confirming that pairs of questions with very similar lengths are much more likely to be true duplicates.
-
+![Word Count Difference Distribution](assets/eda_word_count_diff_distribution.png)
 ### 3. Feature Correlation
 
 
@@ -33,7 +34,7 @@ The EDA phase focused on understanding the data structure, identifying class imb
 * **Analysis:** The correlation heatmap was used to quantify the relationship between our engineered length features and the target variable.
     * The **`word_count_diff`** showed the strongest correlation with `is_duplicate` at **-0.20**. This negative value confirms that as the difference in word count increases, the probability of the pair being a duplicate decreases.
 * **Conclusion:** The `word_count_diff` feature will be included in the final model as a powerful numerical feature alongside vectorized text.
-
+![Correlation Matrix Heatmap](assets/eda_correlation_matrix.png)
 ---
 
 ## ⚙️ Step 2: Text Preprocessing and Feature Engineering
