@@ -100,3 +100,48 @@ This visualization, a **Heatmap**, quantifies the linear relationship between th
 
 ---
 
+## ⚙️ Step 2: Text Preprocessing and Feature Engineering
+
+This step transformed the raw text into a high-dimensional feature matrix suitable for machine learning, while also managing class imbalance.
+
+### 1. Preprocessing Pipeline
+
+The cleaned text underwent the following normalization process:
+
+* **Standardization:** Lowercasing, removal of special characters, punctuation, and English stopwords.
+* **Normalization:** Applied **Lemmatization** (using NLTK's WordNetLemmatizer) to reduce words to their base or root form (e.g., "running" becomes "run"), which helps the model treat different word forms as the same feature.
+
+### 2. Feature Extraction and Matrix Creation
+
+We used a combined approach for feature extraction:
+
+1.  **Vectorization (TF-IDF):** Questions were vectorized using **Term Frequency-Inverse Document Frequency** (TF-IDF), limited to the top 20,000 most frequent words.
+2. **Feature Stacking:** The final feature matrix was constructed by combining four distinct sets of features:
+ 
+ * **Absolute Difference Vector** ($\mathbf{|TFIDF_{Q1} - TFIDF_{Q2}|}$): This captures the **dissimilarity** between the questions.
+ * **Element-wise Product Vector** ($\mathbf{TFIDF_{Q1} \cdot TFIDF_{Q2}}$): This captures the **overlap** between the questions.
+ * **`common_words`** (Engineered numerical feature): A direct count of shared words.
+ * **`word_count_diff`** (Engineered numerical feature): The absolute difference in question length.
+
+* **Final Feature Matrix Shape:** `(404351, 40002)`
+    * *Explanation:* The matrix has 404,351 rows (original data points) and **40,002 columns** (features). This comes from (20,000 difference features + 20,000 product features + 2 numerical features).
+
+### 3. Data Splitting and Stratification
+
+The data was split into Training, Validation, and Testing sets using stratification to ensure the duplicate ratio ($\approx 37\%$) is maintained across all three sets.
+
+| Set | Proportion | Size (Rows) | Purpose |
+| :--- | :--- | :--- | :--- |
+| **Training** | 70% | 283,045 | Model learning and fitting. |
+| **Validation** | 10% | 40,435 | Hyperparameter tuning and model selection. |
+| **Testing** | 20% | 80,871 | Final, unbiased evaluation of the best model. |
+
+### 4. Class Imbalance Correction (Oversampling)
+
+To prevent the model from being biased toward the majority class (Non-Duplicates), **Random OverSampling (ROS)** was applied *only* to the training set.
+
+* **Original Training Duplicates (1):** 104,514
+* **Resampled Training Duplicates (1):** 178,531
+* **Resampled Training Total Size:** 357,062 rows
+
+The training data is now perfectly balanced (50/50), which is essential for achieving reliable **Precision** and **Recall** metrics.
