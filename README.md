@@ -34,7 +34,51 @@ The EDA phase focused on understanding the data structure, identifying class imb
   <img src="assests/eda_word_count_diff_distribution.png" alt="Word Count Difference Distribution" width="500"/>
 </p>
 
-### 3. Feature Correlation
+### 3. Sentence Length Distribution
+
+This plot analyzes the distribution of the **word count** for both Question 1 and Question 2 after initial cleaning.
+
+* **Key Insight:** The density curves for $Q1$ and $Q2$ overlap almost perfectly, with the peak around 8–12 words. This confirms that questions in the dataset are **structurally similar in length** across the board. This basic characteristic needs to be augmented by more semantic features to distinguish duplicates.
+
+
+<p align="center">
+  <img src="assests/eda_sentence_length_distribution.png" alt="Sentence Length Distribution (Word Counts)" width="500"/>
+</p>
+
+### 4. Common Words Count vs. Duplication
+
+This box plot compares the number of words shared between the question pairs, directly against the target variable.
+
+* **Feature:** This plot visualizes the predictive power of the **`common_words`** feature (count of intersecting words).
+* **Key Insight:** The median and overall distribution for the **Duplicate (1)** group is shifted significantly **higher** than the Non-Duplicate (0) group. This is a critical finding: pairs that are true duplicates share a far greater number of words. The `common_words` count is, therefore, a **highly effective feature** for the classification model.
+
+
+<p align="center">
+  <img src="assests/eda_common_words_boxplot.png" alt="Common Words Count Box Plot" width="500"/>
+</p>
+
+### 5. Word Cloud Comparison
+
+These visualizations show the most frequent words (excluding common English stopwords) used in the questions, separated by the duplication status.
+
+#### **Word Cloud for Duplicate Pairs**
+
+* **Key Insight:** This cloud confirms that duplicate questions frequently cluster around **specific, narrow topics** (e.g., product names, popular technologies, financial terms). The highly prominent words here serve as strong indicators of where the core duplication issues lie.
+
+<p align="center">
+  <img src="assests/eda_wordcloud_duplicates.jpg" alt="Word Cloud for Duplicate Pairs" width="500"/>
+</p>
+
+#### **Word Cloud for Non-Duplicate Pairs**
+
+* **Key Insight:** Words in this cloud are generally **more generic or broad**. Comparing the two clouds shows that questions marked as non-duplicate have a wider variety of themes, lacking the intense frequency clustering seen in the duplicate set.
+
+![Word Cloud for Non-Duplicate Pairs](assets/eda_wordcloud_non_duplicates.jpg)
+<p align="center">
+  <img src="assests/eda_wordcloud_non_duplicates.jpg" alt="Word Cloud for Non-Duplicate Pairs" width="500"/>
+</p>
+
+### 6. Feature Correlation
 
 
 
