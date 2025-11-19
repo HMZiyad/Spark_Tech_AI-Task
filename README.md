@@ -17,7 +17,7 @@ The EDA phase focused on understanding the data structure, identifying class imb
 
 
 * **Analysis:** The distribution plot shows that approximately **63%** of the pairs are **Not Duplicate** (0), while only **37%** are **Duplicate** (1).
-* **Impact:** Due to this class imbalance, we must use **F1-Score** and **AUC-ROC** as primary evaluation metrics, as simple accuracy would be misleading.
+* **Impact:** Due to this class imbalance, we must use **F1-Score** and **AUC-ROC** as primary evaluation metrics, as simple accuracy would be misleading. For Model training, we have to go trough over sampling or under sampling for better model performane
 
 <p align="center">
   <img src="assests/eda_duplicate_distribution.png" alt="Target Variable Distribution" width="500"/>
