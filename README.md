@@ -78,65 +78,25 @@ These visualizations show the most frequent words (excluding common English stop
   <img src="assests/eda_wordcloud_non_duplicates.png" alt="Word Cloud for Non-Duplicate Pairs" width="500"/>
 </p>
 
-### 6. Feature Correlation
+### 6. Feature Correlation Matrix Analysis
 
+This visualization, a **Heatmap**, quantifies the linear relationship between the simple numerical features (length and count) and the target variable, `is_duplicate`.
 
-
-* **Analysis:** The correlation heatmap was used to quantify the relationship between our engineered length features and the target variable.
-    * The **`word_count_diff`** showed the strongest correlation with `is_duplicate` at **-0.20**. This negative value confirms that as the difference in word count increases, the probability of the pair being a duplicate decreases.
-* **Conclusion:** The `word_count_diff` feature will be included in the final model as a powerful numerical feature alongside vectorized text.
 
 <p align="center">
   <img src="assests/eda_correlation_matrix.png" alt="Correlation Matrix Heatmap" width="500"/>
 </p>
----
 
-## ⚙️ Step 2: Text Preprocessing and Feature Engineering
+* **What Correlation Means:** Values range from $+1.0$ (perfect positive relationship) to $-1.0$ (perfect negative relationship). A value close to $0$ means little to no linear relationship.
 
-This step converts raw text into a numerical format suitable for machine learning.
+| Relationship | Correlation Coefficient | Interpretation |
+| :--- | :--- | :--- |
+| **`word_count_diff` vs. `is_duplicate`** | **$-0.20$** | **The most significant signal.** This indicates a weak but important **negative correlation**. As the absolute difference in word count increases (i.e., questions become more structurally dissimilar), the probability of the pair being a duplicate decreases. |
+| **Individual Lengths/Counts vs. `is_duplicate`** | $\approx -0.15$ to $-0.17$ | The individual length/word count of $Q1$ or $Q2$ has a very weak relationship with duplication, confirming that the **difference** between the two questions is a much stronger indicator than their individual sizes. |
+| **Internal Feature Correlation** | $\approx +0.95$ to $+0.97$ | Notice the high correlation between `q1_len` and `q1_word_count` (and similarly for $Q2$). This is expected: more characters generally mean more words. This confirms our features are consistent. |
 
-1.  **Text Cleaning:**
-    * Converted all text to **lowercase**.
-    * Handled missing values by replacing NaNs with an empty string.
-    * Removed HTML tags (e.g., `[math]...[/math]`).
-    * Removed punctuation and special characters.
-    * Removed **English stopwords** (e.g., 'the', 'a', 'is').
-2.  **Feature Augmentation:** Created the following features based on the *cleaned* text:
-    * **`common_words`:** Count of common words between the two questions.
-    * **`word_count_diff`:** (Re-calculated on cleaned text) Absolute difference in word count.
-3.  **Vectorization (TF-IDF):**
-    * Used **TF-IDF (Term Frequency-Inverse Document Frequency)** to convert the cleaned questions into sparse numerical vectors.
-    * The final feature matrix combines four components for maximum predictive power:
-        * $|\text{TFIDF}_{\text{Q1}} - \text{TFIDF}_{\text{Q2}}|$ (Absolute Difference)
-        * $\text{TFIDF}_{\text{Q1}} \cdot \text{TFIDF}_{\text{Q2}}$ (Element-wise Product)
-        * $\text{common\_words}$ (Numerical Feature)
-        * $\text{word\_count\_diff}$ (Numerical Feature)
-4.  **Data Split:** The final feature matrix was split into 80% training data and 20% test data, using **stratification** to preserve the class balance ratio in both sets.
+**Conclusion:** The $-0.20$ correlation from `word_count_diff` confirms our hypothesis from the KDE plot: **structural similarity is predictive of duplication**, and this engineered feature is the most valuable simple numerical feature we can add to our text model.
+
 
 ---
 
-## 🧠 Step 3: Model Building and Evaluation
-
-We established a strong baseline using **Logistic Regression** and then recommend an advanced model for production.
-
-### Baseline Model: Logistic Regression
-
-| Metric | Result (Example) | Justification |
-| :--- | :--- | :--- |
-| **Accuracy** | 76.50% | Base measure, but misleading due to imbalance. |
-| **F1-Score** | 68.00% | **Primary Metric:** Best balance between Precision and Recall. |
-| **Recall** | 60.50% | Measures how many duplicates we correctly identified. |
-| **Precision** | 77.00% | Measures how many of our positive predictions were correct. |
-| **AUC-ROC** | 83.50% | Measures the model's ability to discriminate between the two classes. |
-
-### Confusion Matrix
-
-| | Predicted 0 | Predicted 1 |
-| :--- | :--- | :--- |
-| **Actual 0** | (True Negatives) | (False Positives) |
-| **Actual 1** | (False Negatives) | (True Positives) |
-
-### Optimization & Future Work
-
-* **Model Tuning:** The next step is to perform **Grid Search** or **Random Search** on the Logistic Regression hyperparameters (e.g., the `C` parameter) to maximize the F1-Score.
-* **Advanced Models:** Experimenting with gradient boosting machines like **XGBoost** or **LightGBM** is highly recommended, as they typically outperform linear models on complex, large-scale feature sets.
